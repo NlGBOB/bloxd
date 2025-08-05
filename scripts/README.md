@@ -8,18 +8,19 @@ Imagine you've built a complex object. When you try to save it to the Moonstone 
 
 ```javascript
 /* [Assume the minified code has been pasted here] */
-const largeComplexJsonWithEdgeCases = {/*your complex Object*/}
+const someObject = {"score":"12387587185791875"}
 
-// Setting
-const compressed = compress(largeComplexJsonWithEdgeCases);
-api.setMoonstoneChestItemSlot("-1", 1, "temp", 1, {customAttributes: compressed })
+const compressed = compress(someObject);
+api.setMoonstoneChestItemSlot("-1", 1, "temp", 1, {customDisplayName: compressed})
 
 // Getting
-const decompressed = decompress(api.getMoonstoneChestItemSlot("-1", 1))
+const customDisplayName = api.getMoonstoneChestItemSlot("-1", 1).attributes.customDisplayName;
+api.log(customDisplayName)
+const decompressed = decompress(customDisplayName)
 
-// Accessing
-api.log(decompressed.someKeyFromYourObject)
-
+// Accessing values
+console.log("Your original Object:", decompressed)
+console.log("Decompressed is an object, let's access the score: ", decompressed.score) 
 ```
 
 ### Pro-Tip for Maximum Savings
