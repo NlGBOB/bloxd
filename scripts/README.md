@@ -15,7 +15,7 @@ const compressed = compress(largeComplexJsonWithEdgeCases);
 api.setMoonstoneChestItemSlot("-1", 1, "temp", 1, {customAttributes: compressed })
 
 // Getting
-const decompressed = api.getMoonstoneChestItemSlot("-1", 1)
+const decompressed = decompress(api.getMoonstoneChestItemSlot("-1", 1))
 
 // Accessing
 api.log(decompressed.someKeyFromYourObject)
