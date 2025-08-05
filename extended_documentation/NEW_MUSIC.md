@@ -1,4 +1,4 @@
-### Bloxd.io Music List
+## Bloxd.io Music List
 
 To play a song, use the following command in your script, replacing `songName` with the desired value from the list below.
 
