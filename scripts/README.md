@@ -16,7 +16,7 @@ const someObject = {
         "isActive": true,
         "roles": ["admin", "editor"],
         "preferences": null,
-        "listOfNumbers": [1515,858818,919030]
+        "listOfNumbers": [1515,858818,919030],
         "statusMessage": "All systems are go!"
     }
 }
