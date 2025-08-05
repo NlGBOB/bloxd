@@ -8,7 +8,18 @@ Imagine you've built a complex object. When you try to save it to the Moonstone 
 
 ```javascript
 /* [Assume the minified code has been pasted here] */
-const someObject = {"score":"12387587185791875"}
+const someObject = {
+    "sessionId": "sess_abc123xyz",
+    "userProfile": {
+        "userId": 98765,
+        "username": "test_user",
+        "isActive": true,
+        "roles": ["admin", "editor"],
+        "preferences": null,
+        "listOfNumbers": [1515,858818,919030]
+        "statusMessage": "All systems are go!"
+    }
+}
 
 const compressed = compress(someObject);
 api.setMoonstoneChestItemSlot("-1", 1, "temp", 1, {customDisplayName: compressed})
@@ -20,7 +31,7 @@ const decompressed = decompress(customDisplayName)
 
 // Accessing values
 console.log("Your original Object:", decompressed)
-console.log("Decompressed is an object, let's access the score: ", decompressed.score) 
+console.log("Decompressed is an object, let's access sessionId ", decompressed.sessionId) 
 ```
 
 ### Pro-Tip for Maximum Savings
