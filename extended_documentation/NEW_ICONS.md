@@ -1,6 +1,4 @@
-# Bloxd Icon Reference Table
-
-This file lists all the available icons in the game. 
+## Bloxd.io Music List
 
 | Icon | Name | Icon | Name | Icon | Name |
 | :--: | :--- | :--: | :--- | :--: | :--- |
