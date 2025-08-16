@@ -1,5 +1,9 @@
-<svg viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
-  <rect x="-30" y="0" width="380" height="512" rx="50" fill="#F0F0F0"/>
+# Icon Reference Table
 
-  <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" fill="currentColor"/>
-</svg>
+| Icon | Name | Icon | Name | Icon | Name |
+| :--: | :--- | :--: | :--- | :--: | :--- |
+| <img src="../assets/icons/angle-down.svg" width="24"> | `angle-down` | <img src="../assets/icons/angle-up.svg" width="24"> | `angle-up` | <img src="../assets/icons/angles-up.svg" width="24"> | `angles-up` |
+| <img src="../assets/icons/arrow-up-right-from-square.svg" width="24"> | `arrow-up-right-from-square` | <img src="../assets/icons/arrow-up.svg" width="24"> | `arrow-up` | <img src="../assets/icons/arrows-rotate.svg" width="24"> | `arrows-rotate` |
+| <img src="../assets/icons/award.svg" width="24"> | `award` | <img src="../assets/icons/backpack.svg" width="24"> | `backpack` | <img src="../assets/icons/bars.svg" width="24"> | `bars` |
+| <img src="../assets/icons/block-question.svg" width="24"> | `block-question` | <img src="../assets/icons/bolt.svg" width="24"> | `bolt` | <img src="../assets/icons/caret-up.svg" width="24"> | `caret-up` |
+| ... | ... | ... | ... | ... | ... |
