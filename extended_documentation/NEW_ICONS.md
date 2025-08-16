@@ -2,6 +2,7 @@
 
 This file lists all the available icons in the game. 
 
+Light mode:
 | Icon | Name | Icon | Name | Icon | Name |
 | :--: | :--- | :--: | :--- | :--: | :--- |
 | <img src="../assets/icons/angle-down.png" width="24"> | `angle-down` | <img src="../assets/icons/angle-up.png" width="24"> | `angle-up` | <img src="../assets/icons/angles-up.png" width="24"> | `angles-up` |
@@ -38,6 +39,8 @@ This file lists all the available icons in the game.
 | <img src="../assets/icons/x.png" width="24"> | `x` | <img src="../assets/icons/youtube.png" width="24"> | `youtube` | | |
 
 
+
+Dark mode:
 | Icon | Name | Icon | Name | Icon | Name |
 | :--: | :--- | :--: | :--- | :--: | :--- |
 | <img src="../assets/icons/angle-down_white_on_black.png" width="24"> | `angle-down` | <img src="../assets/icons/angle-up_white_on_black.png" width="24"> | `angle-up` | <img src="../assets/icons/angles-up_white_on_black.png" width="24"> | `angles-up` |
@@ -72,4 +75,3 @@ This file lists all the available icons in the game.
 | <img src="../assets/icons/user-slash_white_on_black.png" width="24"> | `user-slash` | <img src="../assets/icons/user-unlock_white_on_black.png" width="24"> | `user-unlock` | <img src="../assets/icons/user_white_on_black.png" width="24"> | `user` |
 | <img src="../assets/icons/video_white_on_black.png" width="24"> | `video` | <img src="../assets/icons/volume-low_white_on_black.png" width="24"> | `volume-low` | <img src="../assets/icons/wrench_white_on_black.png" width="24"> | `wrench` |
 | <img src="../assets/icons/x_white_on_black.png" width="24"> | `x` | <img src="../assets/icons/youtube_white_on_black.png" width="24"> | `youtube` | | |
-```
