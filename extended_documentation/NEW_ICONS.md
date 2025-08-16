@@ -1,4 +1,4 @@
-## Bloxd.io Music List
+## Bloxd.io Icons List
 
 | Icon | Name | Icon | Name | Icon | Name |
 | :--: | :--- | :--: | :--- | :--: | :--- |
