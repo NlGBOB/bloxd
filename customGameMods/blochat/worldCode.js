@@ -38,45 +38,42 @@ function tell(playerId, message) { api.sendMessage(playerId, message, { color: "
 function error(playerId, message) { api.sendMessage(playerId, `[Error] ${message}`, { color: "#ff5555" }); }
 function getFormattedPlayerName(playerId) { const p = players[playerId]; return p ? `${p.name}(${p.session_id})` : "Unknown"; }
 function getPlayerIdBySessionId(sessionId) { for (const [pid, pdata] of Object.entries(players)) { if (pdata.session_id === sessionId) return pid; } return null; }
-function generateChannelId() { const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; let r; do { r = ''; for (let i = 0; i < 3; i++) r += c.charAt(Math.floor(Math.random() * c.length)); } while (chats[r]); return r; }
-function updatePlayerChannelsUI(playerId) { const p = players[playerId]; if (!p) return; const o = p.channels.map(cid => ({ channelName: cid, elementContent: [{ str: `#${cid}` }], elementBgColor: cid === "Global" ? "#333333" : "#4a4a4a" })); api.setClientOption(playerId, "chatChannels", o); }
 
 /**
- * Formats a timestamp into a non-jittery, fixed-width relative time string.
- * @param {number} timestamp The timestamp from Date.now().
- * @returns {string} The formatted time string.
+ * Generates a random, unique 2-uppercase-letter channel ID.
  */
-function formatRelativeTime(timestamp) {
-    const diffSeconds = Math.floor((Date.now() - timestamp) / 1000);
-
-    if (diffSeconds < 10) return "<10 sec ago";
-    if (diffSeconds < 30) return "<30 sec ago";
-    if (diffSeconds < 60) return " <1 min ago"; // Note the leading space for alignment
-
-    const minutes = Math.floor(diffSeconds / 60);
-    if (minutes < 10) {
-        return ` ~${minutes} min ago`; // Leading space for single-digit minutes
-    }
-    // For 10+ minutes, a small jitter is acceptable as it's infrequent.
-    return `~${minutes} min ago`;
+function generateChannelId() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let result;
+    do {
+        result = '';
+        // Generate a 2-character ID to avoid accidental profanity.
+        for (let i = 0; i < 2; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+    } while (chats[result]);
+    return result;
 }
 
+function updatePlayerChannelsUI(playerId) { const p = players[playerId]; if (!p) return; const o = p.channels.map(cid => ({ channelName: cid, elementContent: [{ str: `#${cid}` }], elementBgColor: cid === "Global" ? "#333333" : "#4a4a4a" })); api.setClientOption(playerId, "chatChannels", o); }
+function formatRelativeTime(timestamp) {
+    const diffSeconds = Math.floor((Date.now() - timestamp) / 1000);
+    if (diffSeconds < 10) return "<10 sec ago";
+    if (diffSeconds < 30) return "<30 sec ago";
+    if (diffSeconds < 60) return " <1 min ago";
+    const minutes = Math.floor(diffSeconds / 60);
+    if (minutes < 10) return ` ~${minutes} min ago`;
+    return `~${minutes} min ago`;
+}
 function updateChannelUiForAllMembers(channelId) {
     const channel = chats[channelId];
     if (!channel || channelId === "Global") return;
-
     const header = { str: `#${channelId} | ${Object.keys(channel.members).length} members. Type /chathelp for help.\n`, style: { color: "#999999", fontSize: "0.8em" } };
     let fullUiContent = [header];
-
     channel.history.forEach(msg => {
         const timestampText = formatRelativeTime(msg.timestamp);
-        fullUiContent.push(
-            ...msg.line,
-            { str: ` (${timestampText})`, style: { color: "#888888", fontSize: "0.7em" } },
-            { str: '\n' }
-        );
+        fullUiContent.push(...msg.line, { str: ` (${timestampText})`, style: { color: "#888888", fontSize: "0.7em" } }, { str: '\n' });
     });
-
     for (const memberId in channel.members) {
         api.setClientOption(memberId, 'middleTextLower', fullUiContent);
     }
@@ -101,17 +98,13 @@ onPlayerJoin = (playerId) => {
     while (usedSessionIds.has(nextAvailableId)) nextAvailableId++;
     const sessionId = nextAvailableId;
     usedSessionIds.add(sessionId);
-
     players[playerId] = { session_id: sessionId, channels: ["Global"], invitation: null, lastPrivateChannel: null, name: api.getEntityName(playerId) };
     chats["Global"].members.push(playerId);
     updatePlayerChannelsUI(playerId);
-
     api.setClientOption(playerId, "lobbyLeaderboardInfo", leaderboardColumns);
     api.setTargetedPlayerSettingForEveryone(playerId, "lobbyLeaderboardValues", { sessionId }, true);
-
     const nameTagInfo = { content: [{ str: `[${sessionId}] `, style: { color: "#aaaaaa" } }, { str: players[playerId].name }] };
     api.setTargetedPlayerSettingForEveryone(playerId, "nameTagInfo", nameTagInfo, true);
-
     for (const existingId in players) {
         if (existingId === playerId) continue;
         const p = players[existingId];
@@ -259,7 +252,7 @@ playerCommand = (playerId, command) => {
         }
         case "chatinfo": {
             tell(playerId, "--- Private Chat Info ---");
-            tell(playerId, "To chat in a private channel, open the chat window and press TAB to cycle through your channels until the private one (#ABC) is selected.");
+            tell(playerId, "To chat in a private channel, open the chat window and press TAB to cycle through your channels until the private one (#AB) is selected.");
             tell(playerId, "Messages sent in a private channel appear in the UI on your screen, not the main chat.");
             tell(playerId, "Timestamps next to messages update automatically every few seconds.");
             tell(playerId, "--------------------");
