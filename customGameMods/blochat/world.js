@@ -10,43 +10,48 @@ const modules = [
     {
         chestPos: [1, 0, 0],
         moduleMap: {
-            blochat: [7, 8],
-            baz: [9]
+            blochat2: [7, 8],
+            baz2: [9]
         }
     },
     {
         chestPos: [0, 1, 0],
         moduleMap: {
-            qux: [10, 11],
-            foo: [12]
+            qux3: [10, 11],
+            foo3: [12]
         }
     }
 ];
 
+// this is the initializer function, is defined in a chest slot
+function blochat(values) {
+    console.log("blochat:", values);
+    // does something calls something
+}
+
+
 
 this.game = this.game || new (class {
-    constructor(modulesMap = {}) {
-        this.moduleNames = []
-        for (const item of modulesMap) {
-            const { chestPos, moduleMap } = item;
-            for (const [moduleName, chestIdx] of Object.entries(moduleMap)) {
-                this.moduleNames.push(moduleName);
+    constructor(modules) {
+        modules.forEach(({ chestPos, moduleMap }) =>
+            Object.entries(moduleMap).forEach(([moduleName, chestIdx]) => {
                 this[moduleName] = {};
-                this[moduleName].initialized = false;
-                this[moduleName].chestPos = chestPos;
-                this[moduleName].chestIdx = chestIdx;
-            }
-        }
-        this.initializeModules();
+                this.initializeModule(moduleName, chestPos, chestIdx);
+            })
+        );
     }
 
-    initializeModules() {
-        for (const moduleName of this.moduleNames) {
-            const module = this[moduleName];
 
-            // if (no errors)
-            this.setInitialized(moduleName)
+    initializeModule(moduleName, chestPos, chestIdx) {
+        // something like eval (getStandart...)
+        const code = api.getStandardChestItemSlot(...chestPos, chestIdx); /// TODO will contain code written beforehand.
+        try {
+            eval(code);
+            this[moduleName].initialized = true;
+        } catch (e) {
+            // handle error
         }
+
     }
 
 
