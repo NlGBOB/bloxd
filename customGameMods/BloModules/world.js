@@ -3,56 +3,46 @@
 // Slot 0 always has to be ModuleLoader
 this.Game = {}
 
-this.Game.modulesChestPos = [98, 1, 63]
+this.Game.modulesChestPos = [333, 1, 112]
 
 
 
-onPlayerJoinAfterAllModulesHaveLoaded = (playerId) => {
+onPlayerJoin_ = (playerId) => {
     this.Chat.onPlayerJoin(playerId)
 };
 
-
-onPlayerJoinHelper = () => {
-    if (this.pendingPlayers) return;
-
-    if (this.pendingPlayers.size) {
-        const playerId = this.pendingPlayers.values().next().value;
-        if (api.playerIsInGame(playerId))
-            onPlayerJoinAfterAllModulesHaveLoaded(playerId)
-        this.pendingPlayers.delete(playerId);
-        if (!this.pendingPlayers.size) {
-            delete this.pendingPlayers;
-        }
-    }
-}
-
-
 onPlayerJoin = (playerId) => {
     if (this.ModuleLoader?.allModulesInitialised)
-        return onPlayerJoinAfterAllModulesHaveLoaded(playerId);
+        return onPlayerJoin_(playerId);
     (this.Game.pendingPlayers ??= new Set()).add(playerId);
-    this.Game.modulesChest ||= api.getBlock(...this.Game.modulesChestPos);
+    if (!this.Game.modulesChest || this.Game.modulesChest === "Unloaded")
+        return this.Game.modulesChest = api.getBlock(...this.Game.modulesChestPos);
     this.Game.pendingModuleLoaderInit ??= true;
 };
 
 
 tick = () => {
-    // if (doneProcessing)
-
-
-    if (!this.ModuleLoader?.allModulesInitialised) {
-        if (!(this.Game.modulesChest ||= api.getBlock(...this.Game.modulesChestPos))) return;
-        if (this.Game.pendingModuleLoaderInit ||= api.getStandardChestItemSlot(this.modulesChestPos, 0)) {
-            eval(this.Game.pendingModuleLoaderInit.attributes.customDisplayName)
-            delete this.Game.pendingModuleLoaderInit
-            return; // We're gonna process the rest of the modules in the next tick.
+    if (!this.Game.fullyInitialised) {
+        if (!this.ModuleLoader?.allModulesInitialised) {
+            if (!this.Game.modulesChest || this.Game.modulesChest === "Unloaded")
+                return this.Game.modulesChest = api.getBlock(...this.Game.modulesChestPos);
+            if (this.Game.pendingModuleLoaderInit) {
+                eval(api.getStandardChestItemSlot(this.Game.modulesChestPos, 0).attributes.customDisplayName)
+                delete this.Game.pendingModuleLoaderInit
+                return;
+            }
+            this.ModuleLoader?.initNextModule()
+            return;
         }
-        this.ModuleLoader.initNextModule()
-        return;
+        if (this.ModuleLoader?.allModulesInitialised && this.Game.pendingPlayers?.size) {
+            const playerId = this.Game.pendingPlayers.values().next().value;
+            api.playerIsInGame(playerId) && onPlayerJoin_(playerId);
+            this.Game.pendingPlayers.delete(playerId);
+
+            if (!this.Game.pendingPlayers.size) {
+                delete this.Game.pendingPlayers;
+                this.Game.fullyInitialised = true;
+            }
+        }
     }
-
-    onPlayerJoinHelper()
-
-
-    this.Chat.test()
 };
