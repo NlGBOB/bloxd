@@ -1,50 +1,14 @@
-const modules = [
-    {
-        chestPos: [0, 0, 0],
-        moduleMap: {
-            blochat: [1, 2, 3],
-            foo: [4, 5],
-            bar: [6]
-        }
-    },
-    {
-        chestPos: [1, 0, 0],
-        moduleMap: {
-            blochat2: [7, 8],
-            baz2: [9]
-        }
-    },
-    {
-        chestPos: [0, 1, 0],
-        moduleMap: {
-            qux3: [10, 11],
-            foo3: [12]
-        }
-    }
-];
-
-// this is the initializer function, is defined in a chest slot
-function blochat(values) {
-    console.log("blochat:", values);
-    // does something calls something
-}
-
-
+const chestPos = [0, 0, 0];
 
 this.game = this.game || new (class {
     constructor(modules) {
-        modules.forEach(({ chestPos, moduleMap }) =>
-            Object.entries(moduleMap).forEach(([moduleName, chestIdx]) => {
-                this[moduleName] = {};
-                this.initializeModule(moduleName, chestPos, chestIdx);
-            })
-        );
+        this.
     }
 
 
     initializeModule(moduleName, chestPos, chestIdx) {
         // something like eval (getStandart...)
-        const code = api.getStandardChestItemSlot(...chestPos, chestIdx); /// TODO will contain code written beforehand.
+        const code = api.getStandardChestItemSlot(...chestPos, chestIdx);
         try {
             eval(code);
             this[moduleName].initialized = true;
@@ -53,19 +17,6 @@ this.game = this.game || new (class {
         }
 
     }
-
-
-    setInitialized(moduleName) {
-        this[moduleName].initialized = true;
-    }
-
-    allModulesInitialized() {
-        return Object.keys(this._modulesData).every(
-            key => this[key]?.initialized === true
-        );
-    }
-
-
 })(modules);
 
 
@@ -80,7 +31,13 @@ tick = () => {
     tick_blochat();
 };
 
+const lobbyInitHandler = (playerId) => {
+
+}
+
 onPlayerJoin = (playerId) => {
+    api.getBlock(0, 0, 0)
+
     onPlayerJoin_blochat(playerId);
 };
 
