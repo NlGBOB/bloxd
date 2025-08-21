@@ -14,14 +14,11 @@ onPlayerJoin_ = (playerId) => {
 tick = (ms) => {
     if (!this.Game.fullyInitialised) initialize()
 
-
+    // Can safely use all modules here
 };
 
-
-
-
-
-
+onPlayerLeave = (playerId) => {
+}
 
 onPlayerJoin = (playerId) => {
     if (this.ModuleLoader?.allModulesInitialised)
@@ -56,11 +53,3 @@ initialize = () => {
         }
     }
 }
-
-tick = (ms) => {
-    if (!this.Game.fullyInitialised)
-        initialize()
-
-};
-
-

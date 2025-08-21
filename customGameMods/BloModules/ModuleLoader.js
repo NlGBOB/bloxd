@@ -15,12 +15,10 @@ class ModuleLoader {
             try {
                 eval(api.getStandardChestItemSlot(globalThis.Game.modulesChestPos, this.currentModuleChestIndex).attributes.customDisplayName);
                 console.log("ModuleLoader: Successfully loaded module from slot " + this.currentModuleChestIndex + ".");
+                this.currentModuleChestIndex += 1;
             } catch (e) {
                 console.log("ModuleLoader: Failed to load module from slot " + this.currentModuleChestIndex + ". Error:", e);
             }
-
-            this.currentModuleChestIndex += 1;
-
         } else {
             delete this.currentModuleChestIndex;
             this.allModulesInitialised = true;

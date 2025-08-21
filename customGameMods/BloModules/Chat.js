@@ -1,9 +1,9 @@
 class Chat {
     constructor() {
-        if (globalThis.Chat instanceof ModuleLoader) {
-            return globalThis.Chat;
-        }
-        globalThis.Chat = this;
+        const Class = this.constructor;
+        if (globalThis[Class.name] instanceof Class) {
+            return globalThis[Class.name];
+        } globalThis[Class.name] = this;
     }
     test = () => {
         api.log("Chat module works!")
@@ -13,5 +13,9 @@ class Chat {
     };
     /* And any other callback */
     onPlayerChat = (playerId, chatMessage, channelName) => { };
+
+
+    static {
+        new this();
+    }
 }
-new Chat();
