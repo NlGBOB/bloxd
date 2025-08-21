@@ -28,31 +28,26 @@ onPlayerJoinHelper = () => {
 
 
 onPlayerJoin = (playerId) => {
-    if (this.ModuleLoader?.allModulesInitialised?.()) return onPlayerJoinAfterAllModulesHaveLoaded(playerId);
-
-    this.Game.modulesChest = api.getBlock(...this.Game.modulesChestPos);
-    this.Game.pendingPlayers ??= new Set();
-    this.Game.pendingPlayers.add(playerId);
+    if (this.ModuleLoader?.allModulesInitialised)
+        return onPlayerJoinAfterAllModulesHaveLoaded(playerId);
+    (this.Game.pendingPlayers ??= new Set()).add(playerId);
+    this.Game.modulesChest ||= api.getBlock(...this.Game.modulesChestPos);
     this.Game.pendingModuleLoaderInit ??= true;
 };
 
 
 tick = () => {
-    if (!this.ModuleLoader?.allModulesInitialised?.()) {
+    // if (doneProcessing)
+
+
+    if (!this.ModuleLoader?.allModulesInitialised) {
         if (!(this.Game.modulesChest ||= api.getBlock(...this.Game.modulesChestPos))) return;
-
-        if (this.Game.pendingModuleLoaderInit) {
-            try {
-                eval(api.getStandardChestItemSlot(this.modulesChestPos, 0).attributes.customDisplayName)
-                delete this.Game.pendingModuleLoaderInit
-            } catch (e) {
-                console.log("Error loading ModuleLoader, trying again...")
-            }
+        if (this.Game.pendingModuleLoaderInit ||= api.getStandardChestItemSlot(this.modulesChestPos, 0)) {
+            eval(this.Game.pendingModuleLoaderInit.attributes.customDisplayName)
+            delete this.Game.pendingModuleLoaderInit
+            return; // We're gonna process the rest of the modules in the next tick.
         }
-
-        if (this.ModuleLoader?.currentModuleChestIndex) {
-            this.ModuleLoader.initModule(this.ModuleLoader?.currentModuleChestIndex)
-        }
+        this.ModuleLoader.initNextModule()
         return;
     }
 
