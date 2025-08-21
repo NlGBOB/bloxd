@@ -1,9 +1,9 @@
 class ModuleLoader {
     constructor() {
-        if (globalThis.ModuleLoader instanceof ModuleLoader) {
-            return globalThis.ModuleLoader;
-        }
-        globalThis.ModuleLoader = this;
+        const Class = this.constructor;
+        if (globalThis[Class.name] instanceof Class) {
+            return globalThis[Class.name];
+        } globalThis[Class.name] = this;
 
         this.currentModuleChestIndex = 1;
         this.maxChestIndexModule = 35 - api.getStandardChestFreeSlotCount(globalThis.Game.modulesChestPos)
@@ -30,5 +30,8 @@ class ModuleLoader {
             this.allModulesInitialised = true;
         }
     }
+
+    static {
+        new this();
+    }
 }
-new ModuleLoader();
