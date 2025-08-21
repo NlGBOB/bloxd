@@ -1,20 +1,23 @@
 this.modulesChestPos = [98, 1, 63];
 this.allModulesInitialised = false;
+this.onPlayerJoinPendingPlayers = new Set();
+
 const moduleLoaderChestIndex = 0;
 
 onPlayerJoin = (playerId) => {
     if (!this.allModulesInitialised) {
         api.getBlock(...this.modulesChestPos);
         this.pendingInit = true;
-        return;
     }
-    // Add here your custom module callbacks
-    //this.Chat.onPlayerJoin()
+    this.onPlayerJoinPendingPlayers.add(playerId);
 };
 
+onPlayerJoinAfterAllModulesHaveLoaded = (playerId) => {
+    this.Chat.onPlayerJoin(playerId)
+};
 
 tick = () => {
-    if (!this.allModulesInitialised) {
+    if (!this.allModulesInitialised && api.getBlock(...this.modulesChestPos)) {
         if (this.pendingInit) {
             this.pendingInit = false;
             eval(api.getStandardChestItemSlot(this.modulesChestPos, moduleLoaderChestIndex).attributes.customDisplayName)
@@ -24,6 +27,12 @@ tick = () => {
         }
         return;
     }
-    // Only after all modules are initialised, you can use them!
+    if (this.onPlayerJoinPendingPlayers.size) {
+        const playerId = this.onPlayerJoinPendingPlayers.values().next().value;
+        onPlayerJoinAfterAllModulesHaveLoaded(playerId)
+        this.onPlayerJoinPendingPlayers.delete(playerId);
+    }
+
+
     // this.Chat.test()
 };

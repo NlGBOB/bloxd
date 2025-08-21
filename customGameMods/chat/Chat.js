@@ -11,7 +11,7 @@ class Chat {
     }
 
     onPlayerJoin = (playerId) => {
-
+        api.log("Successfully called chat's onplayerjoin")
     };
 
     onPlayerLeave = (playerId) => {
