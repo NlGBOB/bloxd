@@ -1,56 +1,55 @@
 
 // Coordinates of the chest that contains the modules.
 // Slot 0 always has to be ModuleLoader
-this.modulesChestPos = [98, 1, 63];
+this.Game = {}
 
-this.modulesChest = null;
+this.Game.modulesChestPos = [98, 1, 63]
 
-onPlayerJoin = (playerId) => {
-    if (!this.allModulesInitialised) {
-        if (!this.onPlayerJoinPendingPlayers)
-            this.onPlayerJoinPendingPlayers = new Set();
 
-        this.modulesChest = api.getBlock(...this.modulesChestPos);
-        this.pendingInit = true;
-        this.onPlayerJoinPendingPlayers.add(playerId);
-        return;
-    }
-    onPlayerJoinAfterAllModulesHaveLoaded(playerId);
-};
 
 onPlayerJoinAfterAllModulesHaveLoaded = (playerId) => {
     this.Chat.onPlayerJoin(playerId)
 };
 
-onPlayerJoinHelper = () => {
-    // TODO before doing any operations, check if player still in game
-    if (!this.onPlayerJoinPendingPlayers) return;
 
-    if (this.onPlayerJoinPendingPlayers.size) {
-        const playerId = this.onPlayerJoinPendingPlayers.values().next().value;
-        onPlayerJoinAfterAllModulesHaveLoaded(playerId)
-        this.onPlayerJoinPendingPlayers.delete(playerId);
-        if (!this.onPlayerJoinPendingPlayers.size) {
-            delete this.onPlayerJoinPendingPlayers;
+onPlayerJoinHelper = () => {
+    if (this.pendingPlayers) return;
+
+    if (this.pendingPlayers.size) {
+        const playerId = this.pendingPlayers.values().next().value;
+        if (api.playerIsInGame(playerId))
+            onPlayerJoinAfterAllModulesHaveLoaded(playerId)
+        this.pendingPlayers.delete(playerId);
+        if (!this.pendingPlayers.size) {
+            delete this.pendingPlayers;
         }
     }
 }
 
+
+onPlayerJoin = (playerId) => {
+    if (this.ModuleLoader?.allModulesInitialised?.()) return onPlayerJoinAfterAllModulesHaveLoaded(playerId);
+
+    this.Game.modulesChest = api.getBlock(...this.Game.modulesChestPos);
+    this.Game.pendingPlayers ??= new Set();
+    this.Game.pendingPlayers.add(playerId);
+    this.Game.pendingModuleLoaderInit ??= true;
+};
+
+
 tick = () => {
-    if (!this.allModulesInitialised) {
-        if (!this.modulesChest) {
-            this.modulesChest = api.getBlock(...this.modulesChestPos)
-            return;
-        }
-        if (this.pendingInit) {
+    if (!this.ModuleLoader?.allModulesInitialised?.()) {
+        if (!(this.Game.modulesChest ||= api.getBlock(...this.Game.modulesChestPos))) return;
+
+        if (this.Game.pendingModuleLoaderInit) {
             try {
                 eval(api.getStandardChestItemSlot(this.modulesChestPos, 0).attributes.customDisplayName)
-                this.pendingInit = false;
+                delete this.Game.pendingModuleLoaderInit
             } catch (e) {
                 console.log("Error loading ModuleLoader, trying again...")
             }
-            this.pendingInit = false;
         }
+
         if (this.ModuleLoader?.currentModuleChestIndex) {
             this.ModuleLoader.initModule(this.ModuleLoader?.currentModuleChestIndex)
         }

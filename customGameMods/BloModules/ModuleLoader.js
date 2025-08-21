@@ -26,9 +26,9 @@ class ModuleLoader {
             this.currentModuleChestIndex += 1;
 
         } else {
-            globalThis.allModulesInitialised = true;
-            delete globalThis.pendingInit;
             delete this.currentModuleChestIndex;
+
+            globalThis.allModulesInitialised = true;
             console.log("ModuleLoader: Finished loading modules");
         }
     }
