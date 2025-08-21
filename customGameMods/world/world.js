@@ -1,13 +1,15 @@
 this.modulesChestPos = [98, 1, 63];
-this.chestMaxSlots = 36;
 this.allModulesInitialised = false;
 const moduleLoaderChestIndex = 0;
 
 onPlayerJoin = (playerId) => {
     if (!this.allModulesInitialised) {
-        api.getBlock(...this.modulesChestPos); // just to load the chest to make it available
+        api.getBlock(...this.modulesChestPos);
         this.pendingInit = true;
+        return;
     }
+    // Add here your custom module callbacks
+    //this.Chat.onPlayerJoin()
 };
 
 
@@ -15,7 +17,6 @@ tick = () => {
     if (!this.allModulesInitialised) {
         if (this.pendingInit) {
             this.pendingInit = false;
-            api.log("the chest:", api.getStandardChestItemSlot(this.modulesChestPos, moduleLoaderChestIndex).attributes.customDisplayName)
             eval(api.getStandardChestItemSlot(this.modulesChestPos, moduleLoaderChestIndex).attributes.customDisplayName)
         }
         if (this.ModuleLoader?.currentModuleChestIndex) {

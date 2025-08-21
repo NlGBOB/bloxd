@@ -1,32 +1,36 @@
 class ModuleLoader {
     constructor() {
-        if (globalThis.ModuleLoader) {
+        if (globalThis.ModuleLoader instanceof ModuleLoader) {
             return globalThis.ModuleLoader;
         }
         globalThis.ModuleLoader = this;
-        globalThis.ModuleLoader.currentModuleChestIndex = 1;
-        globalThis.ModuleLoader.lastModuleIndex = globalThis.chestMaxSlots - api.getStandardChestFreeSlotCount(globalThis.modulesChestPos) - 1;
-        api.log("ModuleLoader successfully initialised")
-
+        this.currentModuleChestIndex = 1;
+        console.log("ModuleLoader successfully initialised.");
     }
 
-    initModule(currentModuleChestIndex) {
-        if (globalThis.ModuleLoader.currentModuleChestIndex <= globalThis.ModuleLoader.lastModuleIndex) {
-            const module = api.getStandardChestItemSlot(globalThis.modulesChestPos, globalThis.ModuleLoader.currentModuleChestIndex);
-            if (module && module.attributes && module.attributes.customDisplayName) {
+    initModule() {
+        if (this.currentModuleChestIndex <= 35 - api.getStandardChestFreeSlotCount(globalThis.modulesChestPos)) {
+
+            const module = api.getStandardChestItemSlot(globalThis.modulesChestPos, this.currentModuleChestIndex);
+
+            if (module && module.attributes && typeof module.attributes.customDisplayName === 'string' && module.attributes.customDisplayName.trim() !== '') {
                 try {
                     eval(module.attributes.customDisplayName);
-                    globalThis.ModuleLoader.currentModuleChestIndex += 1;
+                    console.log("ModuleLoader: Successfully loaded module from slot " + this.currentModuleChestIndex + ".");
                 } catch (e) {
-                    console.error("Failed to load module from slot" + globalThis.ModuleLoader.currentModuleChestIndex, e);
+                    console.log("ModuleLoader: Failed to load module from slot " + this.currentModuleChestIndex + ". Error:", e);
                 }
+            } else {
+                console.log("ModuleLoader: Slot " + this.currentModuleChestIndex + " is empty or missing a valid 'customDisplayName' attribute. Skipping.");
             }
+            this.currentModuleChestIndex += 1;
+
         } else {
             globalThis.allModulesInitialised = true;
-            delete globalThis.ModuleLoader.currentModuleChestIndex;
-            delete globalThis.ModuleLoader.lastModuleIndex
+            delete globalThis.pendingInit;
+            delete this.currentModuleChestIndex;
+            console.log("ModuleLoader: Finished loading modules");
         }
-
     }
 }
-new ModuleLoader()
+new ModuleLoader();

@@ -1,10 +1,9 @@
 class Chat {
     constructor() {
-        if (globalThis.Chat) {
+        if (globalThis.Chat instanceof ModuleLoader) {
             return globalThis.Chat;
         }
         globalThis.Chat = this;
-        api.log("Chat successfully initialised")
     }
 
     test = () => {
@@ -24,7 +23,6 @@ class Chat {
     };
 
     onPlayerChat = (playerId, chatMessage, channelName) => {
-        api.log("AMONGIS, HI FROM Chat class");
     };
 }
 new Chat();
