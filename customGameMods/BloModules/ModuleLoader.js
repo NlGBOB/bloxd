@@ -12,17 +12,13 @@ class ModuleLoader {
 
     initNextModule() {
         if (this.currentModuleChestIndex <= this.maxChestIndexModule) {
-            const module = api.getStandardChestItemSlot(globalThis.Game.modulesChestPos, this.currentModuleChestIndex);
-            if (module && module.attributes && typeof module.attributes.customDisplayName === 'string' && module.attributes.customDisplayName.trim() !== '') {
-                try {
-                    eval(module.attributes.customDisplayName);
-                    console.log("ModuleLoader: Successfully loaded module from slot " + this.currentModuleChestIndex + ".");
-                } catch (e) {
-                    console.log("ModuleLoader: Failed to load module from slot " + this.currentModuleChestIndex + ". Error:", e);
-                }
-            } else {
-                console.log("ModuleLoader: Slot " + this.currentModuleChestIndex + " is empty or missing a valid 'customDisplayName' attribute. Skipping.");
+            try {
+                eval(api.getStandardChestItemSlot(globalThis.Game.modulesChestPos, this.currentModuleChestIndex).attributes.customDisplayName);
+                console.log("ModuleLoader: Successfully loaded module from slot " + this.currentModuleChestIndex + ".");
+            } catch (e) {
+                console.log("ModuleLoader: Failed to load module from slot " + this.currentModuleChestIndex + ". Error:", e);
             }
+
             this.currentModuleChestIndex += 1;
 
         } else {

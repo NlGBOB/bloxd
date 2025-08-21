@@ -1,1 +1,33 @@
-class ModuleLoader { constructor() { if (globalThis.ModuleLoader instanceof ModuleLoader) return globalThis.ModuleLoader; globalThis.ModuleLoader = this, this.currentModuleChestIndex = 1, console.log("ModuleLoader successfully initialised.") } initModule() { if (this.currentModuleChestIndex <= 35 - api.getStandardChestFreeSlotCount(globalThis.modulesChestPos)) { const module = api.getStandardChestItemSlot(globalThis.modulesChestPos, this.currentModuleChestIndex); if (module && module.attributes && "string" == typeof module.attributes.customDisplayName && "" !== module.attributes.customDisplayName.trim()) try { eval(module.attributes.customDisplayName), console.log("ModuleLoader: Successfully loaded module from slot " + this.currentModuleChestIndex + ".") } catch (e) { console.log("ModuleLoader: Failed to load module from slot " + this.currentModuleChestIndex + ". Error:", e) } else console.log("ModuleLoader: Slot " + this.currentModuleChestIndex + " is empty or missing a valid 'customDisplayName' attribute. Skipping."); this.currentModuleChestIndex += 1 } else globalThis.allModulesInitialised = !0, delete globalThis.pendingInit, delete this.currentModuleChestIndex, console.log("ModuleLoader: Finished loading modules") } } new ModuleLoader;
+class 🕜 {
+    constructor() {
+        const Class = this.constructor;
+        if (globalThis[Class.name] instanceof Class) {
+            return globalThis[Class.name];
+        } globalThis[Class.name] = this;
+
+        this.🕔 = 1;
+        this.🕠 = 35 - api.getStandardChestFreeSlotCount(globalThis.🕛.🕧)
+        console.log("ModuleLoader successfully initialised.");
+    }
+
+    🕓() {
+        if (this.🕔 <= this.🕠) {
+            try {
+                eval(api.getStandardChestItemSlot(globalThis.🕛.🕧, this.🕔).attributes.customDisplayName);
+                console.log("ModuleLoader: Successfully loaded module from slot " + this.🕔 + ".");
+            } catch (e) {
+                console.log("ModuleLoader: Failed to load module from slot " + this.🕔 + ". Error:", e);
+            }
+
+            this.🕔 += 1;
+
+        } else {
+            delete this.🕔;
+            this.🕑 = true;
+        }
+    }
+
+    static {
+        new this();
+    }
+}
