@@ -5,24 +5,13 @@ class Chat {
         }
         globalThis.Chat = this;
     }
-
     test = () => {
         api.log("Chat module works!")
     }
-
     onPlayerJoin = (playerId) => {
-        api.log("Successfully called chat's onplayerjoin")
+        api.log("Successfully called Chat's onplayerjoin")
     };
-
-    onPlayerLeave = (playerId) => {
-
-    };
-
-    playerCommand = (playerId, command) => {
-
-    };
-
-    onPlayerChat = (playerId, chatMessage, channelName) => {
-    };
+    /* And any other callback */
+    onPlayerChat = (playerId, chatMessage, channelName) => { };
 }
 new Chat();
