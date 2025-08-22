@@ -21,10 +21,9 @@ class m {
                Could be attributes.customAttributes - it's entirely up to you. */
             const c = api.getStandardChestItemSlot(globalThis.w.MODULE_CHEST_COORDS, this.i).attributes.customDisplayName;
             eval(c);
-            console.log("m: Successfully loaded module from slot " + this.i + ".");
 
             /* If the last module slot has been processed successfully, mark all modules as initialized.
-                n() will no longer be called. */
+            initNextModule() will no longer be called. Wait 2 more ticks before declaring all modules as initialised*/
             if (this.i >= this.l) {
                 delete this.i;
                 this.a = true;
@@ -32,9 +31,9 @@ class m {
                 return;
             }
 
-            /* If eval succeeds, move to the next slot; otherwise, try this slot again next tick. */
+            /* If eval succeeds, move to the next slot; otherwise, 
+               this increment won't run due to catch(e) and it'll try this slot again next tick. */
             this.i += 1;
-
         } catch (e) {
             console.log("m: Failed to load module from slot " + this.i + ". Error:", e);
         }

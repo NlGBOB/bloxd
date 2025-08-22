@@ -34,9 +34,9 @@ class ModuleLoader {
                 return;
             }
 
-            /* If eval succeeds, move to the next slot; otherwise, try this slot again next tick. */
+            /* If eval succeeds, move to the next slot; otherwise, 
+                this increment won't run due to catch(e) and it'll try this slot again next tick. */
             this.currentModuleSlotIndex += 1;
-
         } catch (e) {
             console.log("ModuleLoader: Failed to load module from slot " + this.currentModuleSlotIndex + ". Error:", e);
         }

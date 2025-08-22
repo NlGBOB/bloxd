@@ -8,9 +8,10 @@ class Chat {
     onPlayerJoin = (playerId) => {
         api.log("Successfully called Chat's onplayerjoin")
     };
-    /* Any other callback */
-    onPlayerChat = (playerId, chatMessage, channelName) => { };
 
+    sayHi = () => {
+        api.log("Hi from Chat");
+    }
 
     static {
         new this();
