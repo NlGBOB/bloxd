@@ -15,7 +15,6 @@ tick = (ms) => {
     // The initialization sequence runs every tick until the world is fully initialized.
     if (!this.WorldState.isFullyInitialized) return initializeWorld();
 
-    
     // Can safely use all modules here after initialization is complete.
     // this.Chat.sayHi()
 };
