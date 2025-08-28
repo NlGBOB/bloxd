@@ -1,6 +1,6 @@
-// this.WorldState = {};
-// this.WorldState.MASTER_CHEST_COORDS = [-52, 1, -64];
-// this.WorldState.CODE_COORDS = [-54, 1, -66];
+this.WorldState = {};
+this.WorldState.MASTER_CHEST_COORDS = [-52, 1, -64];
+this.WorldState.CODE_COORDS = [-54, 1, -66];
 
 // This function is called for a player only after all modules are fully initialized.
 onPlayerJoinReady = (playerId) => {
@@ -56,13 +56,14 @@ initializeWorld = () => {
 
         /* Tick 2: Initialize the ModuleLoader class itself from slot 0. */
         if (this.WorldState.isModuleLoaderInitPending) {
-            eval(api.getStandardChestItemSlot(this.WorldState.MASTER_CHEST_COORDS, 0).attributes.customDisplayName);
+            this.WorldState.masterChestData = api.getStandardChestItems(this.WorldState.MASTER_CHEST_COORDS)
+            eval(this.WorldState.masterChestData[0].attributes.customDisplayName);
             delete this.WorldState.isModuleLoaderInitPending;
             return;
         }
 
         /* Tick 3 ... : Sequentially initialize modules one by one per tick */
-        this.ModuleLoader?.initNextModule();
+        this.ModuleLoader?.loadLoader();
         return;
     }
 
